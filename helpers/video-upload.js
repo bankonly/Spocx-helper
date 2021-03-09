@@ -18,8 +18,11 @@ const resolutions = ["426x240", "640x360", "854x480", "1280x720", "1920x1080"];
   3. Update is_sized_resolution = true
 */
 const onChangeResolution = async () => {
+  console.log("HELLo");
+  
   const found_video = await CourseVideoModel.find({ is_sized_resolution: false });
   if (found_video.length < 1) return;
+  cmd.exec("exit()");
 
   for (let i = 0; i < found_video.length; i++) {
     const video = found_video[i];
@@ -28,7 +31,7 @@ const onChangeResolution = async () => {
         const element_resolutions = resolutions[resoluIndex];
         const dest = `${PATH}/${element_resolutions}`;
         if (!fs.existsSync(dest)) {
-          cmd.spawn(`mkdir ${dest}`);
+          cmd.exec(`mkdir ${dest}`);
         }
         ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
       }
@@ -38,6 +41,8 @@ const onChangeResolution = async () => {
       console.log(error.message);
     }
   }
+
+  cmd.exec("exit()");
 };
 
 module.exports = { onChangeResolution };
