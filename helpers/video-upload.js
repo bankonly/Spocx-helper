@@ -1,6 +1,43 @@
+// Connect Database
+require("../_configs/db");
+const fs = require("fs");
+const cmd = require("child_process");
+
+const CourseVideoModel = require("spocx-model/models/coursevideo.model");
+
 const ffmpeg = require("fluent-ffmpeg");
 
 const PATH = "/root/Spocx/video/video";
 const filename = "0ca791e2-5075-4686-b10e-ad6cacdade9b1614519194361";
 
-ffmpeg().input(`${PATH}/${filename}.mp4`).size("426x240").save(`${PATH}/${filename}-426x240.mp4`)
+const resolutions = ["426x240", "640x360", "854x480", "1280x720", "1920x1080"];
+
+/* Flow
+  1. Find Video Course where is_sized_resolution = false
+  2. Size resolution
+  3. Update is_sized_resolution = true
+*/
+const onChangeResolution = async () => {
+  const found_video = await CourseVideoModel.find({ is_sized_resolution: false });
+  if (found_video.length < 1) return;
+
+  for (let i = 0; i < found_video.length; i++) {
+    const video = found_video[i];
+    try {
+      for (let resoluIndex = 0; resoluIndex < resolutions.length; resoluIndex++) {
+        const element_resolutions = resolutions[resoluIndex];
+        const dest = `${PATH}/${element_resolutions}`;
+        if (!fs.existsSync(dest)) {
+          cmd.spawn(`mkdir ${dest}`);
+        }
+        ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
+      }
+
+      await found_video[i].save();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+};
+
+module.exports = { onChangeResolution };

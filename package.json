@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/bankonly/Spocx-job#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
-    "spocx-model": "^1.0.31"
+    "mongoose": "^5.11.19",
+    "spocx-model": "^1.0.32"
   }
 }
