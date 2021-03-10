@@ -19,7 +19,7 @@ const resolutions = ["426x240", "640x360", "854x480", "1280x720", "1920x1080"];
 */
 const onChangeResolution = async () => {
   try {
-    const found_video = await CourseVideoModel.find({ is_sized_resolution: false });
+    const found_video = await CourseVideoModel.find({ $or: [{ is_sized_resolution: false }, { is_sized_resolution: null }] });
     if (found_video.length < 1) {
       throw new Error(`No Data`);
     }
