@@ -32,6 +32,9 @@ const onChangeResolution = async () => {
           if (!fs.existsSync(dest)) {
             cmd.exec(`mkdir ${dest}`);
           }
+
+          console.log(video);
+          
           ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
         }
 
