@@ -33,7 +33,9 @@ const onChangeResolution = async () => {
             cmd.exec(`mkdir ${dest}`);
           }
 
-          console.log(video);
+          console.log(element_resolutions);
+          console.log(`${PATH}/${video.video_path}`);
+          console.log(`${dest}/${video.video_path}`);
           
           ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
         }
