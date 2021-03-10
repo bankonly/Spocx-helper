@@ -1,3 +1,5 @@
 const { onChangeResolution } = require("../helpers/video-upload");
 
-onChangeResolution();
+setTimeout(async () => {
+  await onChangeResolution();
+}, 500);
