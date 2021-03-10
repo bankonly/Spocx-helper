@@ -34,10 +34,12 @@ const onChangeResolution = async () => {
           }
 
           console.log(element_resolutions);
+          console.log(dest);
           console.log(`${PATH}/${video.video_path}`);
           console.log(`${dest}/${video.video_path}`);
           
-          ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
+          // ffmpeg().input(`${PATH}/${video.video_path}`).size(element_resolutions).save(`${dest}/${video.video_path}`);
+          cmd.exec(`ffmpeg -i ${PATH}/${video.video_path} -s ${element_resolutions} -c:a copy ${dest}/${video.video_path}`)
         }
 
         await found_video[i].save();
